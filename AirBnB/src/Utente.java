@@ -155,4 +155,9 @@ public class Utente
     public void setRichiestahost(boolean richiestahost) {
         this.richiestahost = richiestahost;
     }
+
+    public void setSuperhost(boolean superhost) //main
+    {
+        this.superhost = superhost;
+    }
 }

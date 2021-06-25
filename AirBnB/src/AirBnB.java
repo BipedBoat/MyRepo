@@ -153,10 +153,9 @@ public TreeMap<Utente,Integer> hostpreferiti()
     TreeMap<Utente, Integer> result = new TreeMap<Utente, Integer>(comparator);
     return result;
 }
-    public TreeMap<Utente,Integer> hostpreferitiquestomese(Month mese)
+    public List<Utente> hostpreferitiquestomese(Month mese)
     {
-        TreeMap<Utente,Integer> mappa = new TreeMap<>();
-        UserComparator comparator = new UserComparator(mappa);
+        List<Utente> lista = new ArrayList<>();
         for (Utente utente: hostabitazioni.keySet())
         {   int i=0;
             for (Abitazione abitazione : hostabitazioni.get(utente))
@@ -166,10 +165,11 @@ public TreeMap<Utente,Integer> hostpreferiti()
                     if (prenotazione.getInizio().getMonth().equals(mese)) i++;
                 }
             }
-            if (!mappa.containsKey(utente)) { mappa.put(utente,i);}
+            utente.setGiorniquestomese(i);
+            lista.add(utente);
         }
-        TreeMap<Utente, Integer> result = new TreeMap<Utente, Integer>(comparator);
-        return result;
+        lista.sort(Comparator.comparingInt(Utente::getGiorniquestomese).reversed());
+        return lista;
     }
 public HashSet<Utente> tuttiIsuperhost()
 {
@@ -215,7 +215,7 @@ public List<Utente> utentipiuattivi()
             {
                 if (prenotazione.getInizio().getMonth().equals(mese))
                 {
-                    LocalDate data = LocalDate.of(prenotazione.getInizio().getYear(),mese.getValue()+1,0);
+                    LocalDate data = LocalDate.of(prenotazione.getInizio().getYear(),mese.getValue()+1,1);
                      i=i+Period.between(prenotazione.getInizio(),data).getDays();
                 }
             }
@@ -223,6 +223,7 @@ public List<Utente> utentipiuattivi()
             lista.add(utente);
         }
         lista.sort(Comparator.comparingInt(Utente::getGiorniquestomese).reversed());
+        if (lista.size()<5) return lista;
         return lista.subList(0,5);
     }
 
