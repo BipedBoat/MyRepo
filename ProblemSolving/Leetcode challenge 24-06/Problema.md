@@ -2,8 +2,8 @@ Given the head of a singly linked list and two integers left and right where lef
 
 Example 1:
 
-https://assets.leetcode.com/uploads/2021/02/19/rev2ex2.jpg
 
+![Example 1](https://assets.leetcode.com/uploads/2021/02/19/rev2ex2.jpg)
 
 
 Input: head = [1,2,3,4,5], left = 2, right = 4
