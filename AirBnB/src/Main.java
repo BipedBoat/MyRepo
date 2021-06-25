@@ -1,4 +1,5 @@
 import java.time.LocalDate;
+import java.time.Month;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -19,7 +20,7 @@ public class Main
         air.autorizzaHost(Giuseppe);
         Abitazione casagiuseppe = new Abitazione("Appartamento","Via delle battute squallide",2,3,4);
         air.aggiungiAbitazione(Giuseppe,casagiuseppe);
-        Annuncio annunciopeppe = new Annuncio(45,"28/07/2021","25/11/2021");
+        Annuncio annunciopeppe = new Annuncio(45,"28/05/2021","25/11/2021");
         air.aggiungiAnnuncio(casagiuseppe,annunciopeppe);
 
         Scanner sc = new Scanner(System.in);
@@ -225,13 +226,20 @@ public class Main
                 boolean run3=true;
                 while(run3)
                 {
-                System.out.println("cosa vuoi fare ? "+'\n'+"|Abitazione Gettonata| (Abitazione con piu prenotazioni negli ultimi 30 giorni)"+'\n'+"|Stampa Abitazioni Host|"+'\n'+"|Ultima Prenotazione Utente|"+'\n'+"|Lista Superhost|"+'\n'+"|Host preferiti| (Host con piu prenotazioni negli ultimi 30 giorni)"+'\n'+"|Utenti Piu Attivi|(con piu prenotazioni negli ultimi 30 giorni)"+'\n'+"|Richieste Host|(Utenti in attesa di approvazione Host)"+'\n'+"|Media posti letto|"+'\n'+"|BACK|");
+                System.out.println("cosa vuoi fare ? "+'\n'+"|Abitazione Gettonata| (Abitazione con piu prenotazioni in uno specificato mese)"+'\n'+"|Stampa Abitazioni Host|"+'\n'+"|Ultima Prenotazione Utente|"+'\n'+"|Lista Superhost|"+'\n'+"|Host preferiti| (Host con piu prenotazioni in uno specificato mese )"+'\n'+"|Utenti Piu Attivi|(con piu prenotazioni negli ultimi 30 giorni)"+'\n'+"|Richieste Host|(Utenti in attesa di approvazione Host)"+'\n'+"|Media posti letto|"+'\n'+"|BACK|");
                 input = sc.nextLine();
                 input= input.toUpperCase(Locale.ROOT);
                 if (input.equals("ABITAZIONE GETTONATA"))
                 {
-                    if (air.piugettonata()!=null)
-                    System.out.println(air.piugettonata().getNome()+" in "+air.piugettonata().getIndirizzo()+'\n'+"ID: "+air.piugettonata().getID());
+                    int mese=0;
+                    System.out.println("Inserisci il mese (Numero) :");
+                    mese = Integer.parseInt(sc.nextLine());
+
+                    if (air.piugettonataquestomese(Month.of(mese))!=null)
+                    {
+                        Abitazione ab = air.piugettonataquestomese(Month.of(mese));
+                    System.out.println(ab.getNome()+" in "+ab.getIndirizzo()+'\n'+"ID: "+ab.getID());
+                    }
                 }
                 if (input.equals("STAMPA ABITAZIONI HOST"))
                 {
@@ -279,7 +287,11 @@ public class Main
                 }
                 if (input.equals("HOST PREFERITI"))
                 {
-                    TreeMap<Utente,Integer> mappa = air.hostpreferiti();
+                    int mese=0;
+                    System.out.println("Inserisci il mese (Numero) :");
+                    mese = Integer.parseInt(sc.nextLine());
+
+                    TreeMap<Utente,Integer> mappa = air.hostpreferitiquestomese(Month.of(mese));
                     if(mappa!=null)
                     {
                         for (Utente u:mappa.keySet())
@@ -291,7 +303,10 @@ public class Main
                 }
                 if (input.equals("UTENTI PIU ATTIVI"))
                 {
-                    List<Utente> lista = air.utentipiuattivi();
+                    int mese=0;
+                    System.out.println("Inserisci il mese (Numero) :");
+                    mese = Integer.parseInt(sc.nextLine());
+                    List<Utente> lista = air.utentipiuattivimese(Month.of(mese));
                     if(lista!=null)
                     {
                         for (Utente u:lista)

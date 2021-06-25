@@ -1,4 +1,5 @@
 import java.time.LocalDate;
+import java.time.Month;
 import java.time.Period;
 import java.util.*;
 
@@ -20,16 +21,7 @@ public void nuovoutente(Utente utente)
     utenterecensioni.put(utente,vuoto);//main
 
 }
-public void autorizzaHost(Utente utente)
-{
-    if (utenti.containsKey(utente.getID()))
-    {
-        utente.ApprovaHost();
-        utenti.put(utente.getIDhost(),utente);
-        HashSet<Abitazione> vuoto = new HashSet<>();
-        hostabitazioni.put(utente,vuoto);
-    }
-}
+
 public void aggiungiAbitazione(Utente utente ,Abitazione abitazione)
 {
     if (hostabitazioni.containsKey(utente))
@@ -45,6 +37,29 @@ public void aggiungiAnnuncio(Abitazione abitazione , Annuncio annuncio)
 {
     abitazione.setAnnuncio(annuncio);
 }
+
+public void addFeedback(Utente utente,Feedback feedback)
+{
+    if (utenteprenotazioni.containsKey(utente)&& abitazioneprenotazioni.containsKey(feedback.getAbitazione()))
+    {
+        feedback.getAbitazione().getListarecensioni().add(feedback);
+        utenterecensioni.get(utente).add(feedback);//Main
+        feedback.getAbitazione().setMediarecensioni();
+    }
+}
+
+public void autorizzaHost(Utente utente)
+{
+    if (utenti.containsKey(utente.getID()))
+    {
+        utente.ApprovaHost();
+        utenti.put(utente.getIDhost(),utente);
+        HashSet<Abitazione> vuoto = new HashSet<>();
+        hostabitazioni.put(utente,vuoto);
+    }
+}
+
+
 public int prenota(Utente utente, Prenotazione prenotazione) //non void per main
 {
     double costo =prenotazione.getAbitazione().getAnnuncio().getPrezzo()*Period.between(prenotazione.getInizio(),prenotazione.getFine()).getDays();
@@ -65,16 +80,7 @@ public int prenota(Utente utente, Prenotazione prenotazione) //non void per main
     if (!prenotazione.getAbitazione().getAnnuncio().getDate().containsAll(prenotazione.getDate())) return 0;
     return -2;
 }
-public void addFeedback(Utente utente,Feedback feedback)
-{
-    if (utenteprenotazioni.containsKey(utente)&& abitazioneprenotazioni.containsKey(feedback.getAbitazione()))
-    {
-        feedback.getAbitazione().getListarecensioni().add(feedback);
-        feedback.setRecensore(utente); // Main
-        utenterecensioni.get(utente).add(feedback);//Main
-        feedback.getAbitazione().setMediarecensioni();
-    }
-}
+
 
 
 public HashSet<Abitazione> ottieniAbHost(String ID)
@@ -106,6 +112,23 @@ public Abitazione piugettonata()
     }
     return piugettonata;
 }
+    public Abitazione piugettonataquestomese(Month mese)
+    {
+
+        int max=0;
+        Abitazione piugettonata=null;
+        for (Abitazione abitazione: abitazioneprenotazioni.keySet())
+        {
+            int i=0;
+            for (Prenotazione prenotazione: abitazioneprenotazioni.get(abitazione))
+            {
+
+                if (prenotazione.getInizio().getMonth().equals(mese)) i++;
+            }
+            if (i>max) { max=i; piugettonata= abitazione;}
+        }
+        return piugettonata;
+    }
 
 public TreeMap<Utente,Integer> hostpreferiti()
 {
@@ -130,6 +153,24 @@ public TreeMap<Utente,Integer> hostpreferiti()
     TreeMap<Utente, Integer> result = new TreeMap<Utente, Integer>(comparator);
     return result;
 }
+    public TreeMap<Utente,Integer> hostpreferitiquestomese(Month mese)
+    {
+        TreeMap<Utente,Integer> mappa = new TreeMap<>();
+        UserComparator comparator = new UserComparator(mappa);
+        for (Utente utente: hostabitazioni.keySet())
+        {   int i=0;
+            for (Abitazione abitazione : hostabitazioni.get(utente))
+            {
+                for (Prenotazione prenotazione: abitazioneprenotazioni.get(abitazione))
+                {
+                    if (prenotazione.getInizio().getMonth().equals(mese)) i++;
+                }
+            }
+            if (!mappa.containsKey(utente)) { mappa.put(utente,i);}
+        }
+        TreeMap<Utente, Integer> result = new TreeMap<Utente, Integer>(comparator);
+        return result;
+    }
 public HashSet<Utente> tuttiIsuperhost()
 {
     HashSet<Utente> superhost = new HashSet<>();
@@ -141,7 +182,7 @@ public HashSet<Utente> tuttiIsuperhost()
 }
 
 public List<Utente> utentipiuattivi()
-{ 
+{
     LocalDate oggi =LocalDate.now();
     LocalDate unmesefa = oggi.minusDays(30);
     List<Utente> lista = new ArrayList<>();
@@ -162,6 +203,28 @@ public List<Utente> utentipiuattivi()
     lista.sort(Comparator.comparingInt(Utente::getGiorniquestomese).reversed());
     return lista.subList(0,5);
 }
+    public List<Utente> utentipiuattivimese(Month mese)
+    {
+
+        List<Utente> lista = new ArrayList<>();
+
+        for (Utente utente: utenteprenotazioni.keySet())
+        {
+            int i = 0;
+            for (Prenotazione prenotazione: utenteprenotazioni.get(utente))
+            {
+                if (prenotazione.getInizio().getMonth().equals(mese))
+                {
+                    LocalDate data = LocalDate.of(prenotazione.getInizio().getYear(),mese.getValue()+1,0);
+                     i=i+Period.between(prenotazione.getInizio(),data).getDays();
+                }
+            }
+            utente.setGiorniquestomese(i);
+            lista.add(utente);
+        }
+        lista.sort(Comparator.comparingInt(Utente::getGiorniquestomese).reversed());
+        return lista.subList(0,5);
+    }
 
 public double mediaPletto()
 {

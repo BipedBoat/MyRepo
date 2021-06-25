@@ -8,7 +8,7 @@ public class Feedback
     private String titolo;
     private String testo;
     private int punteggio;
-    Utente recensore;
+
 
     public Feedback(String titolo, String testo, int punteggio)
     {
@@ -77,11 +77,4 @@ public class Feedback
                 "Titolo='" + titolo + '\n' + ", Recensione='" + testo + '\n' + ", Punteggio=" + punteggio +'}';
     }
 
-    public Utente getRecensore() {
-        return recensore;
-    }
-
-    public void setRecensore(Utente recensore) {
-        this.recensore = recensore;
-    }
 }
