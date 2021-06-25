@@ -14,7 +14,7 @@ public class Abitazione
     private int nlocali;
     private String ID;
     private Annuncio annuncio;
-    private Utente host;
+    private String IDhost;
     private List<Feedback> listarecensioni = new ArrayList<>();
     private double mediarecensioni;
 
@@ -28,12 +28,12 @@ public class Abitazione
        setPiano(piano);
     }
 
-    public Utente getHost() {
-        return host;
+    public String getIDhost() {
+        return IDhost;
     }
 
-    public void setHost(Utente host) {
-        this.host = host;
+    public void setIDhost(String host) {
+        this.IDhost = host;
     }
 
     public Annuncio getAnnuncio() {

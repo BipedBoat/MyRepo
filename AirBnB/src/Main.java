@@ -1,4 +1,3 @@
-import org.w3c.dom.ls.LSOutput;
 
 import java.time.DateTimeException;
 import java.time.LocalDate;
@@ -44,7 +43,12 @@ public class Main {
         while (run) {
             try {
                 String input;
-                System.out.println("cosa vuoi fare ? " + '\n' + "|Registrati|" + '\n' + "|Login|" + '\n' + "|STAFF|" + '\n' + "|EXIT|");
+                System.out.println("""
+                        cosa vuoi fare ?
+                        |Registrati|
+                        |Login|
+                        |STAFF|
+                        |EXIT|""");
                 input = sc.nextLine();
                 input = input.toUpperCase(Locale.ROOT);
                 if (input.equals("REGISTRATI")) {
@@ -105,7 +109,7 @@ public class Main {
                                 input = sc.nextLine();
                                 input = input.toUpperCase(Locale.ROOT);
                                 if (input.equals("RICARICA CREDITO")) {
-                                    double ricarica = 0;
+                                    double ricarica;
                                     System.out.println("Inserisci importo da ricaricare: ");
                                     ricarica = Double.parseDouble(sc.nextLine());
                                     user.AddCredito(Math.abs(ricarica));
@@ -114,7 +118,7 @@ public class Main {
                                 }
                                 if (input.equals("PRENOTA")) try{
                                     for (Abitazione abitazione : air.getAbitazioneprenotazioni().keySet()) {
-                                        if (abitazione.getAnnuncio() != null && !abitazione.getHost().getID().equals(user.getID()))
+                                        if (abitazione.getAnnuncio() != null && !abitazione.getIDhost().equals(user.getIDhost()))
                                             System.out.println(abitazione.getNome() + " in " + abitazione.getIndirizzo() + '\n' + "n locali : " + abitazione.getNlocali() + '\n' + "n posti letto: " + abitazione.getNpostiletto() + '\n' + abitazione.getPiano() + "° piano" + '\n' + "Prezzo: " + abitazione.getAnnuncio().getPrezzo() + "€ a notte" + '\n' + "Media recensioni: " + abitazione.getMediarecensioni() + '\n' + "ID Abitazione: " + abitazione.getID() + '\n' + "______________________________________________");
                                     }
                                     System.out.println("Inserisci l'ID dell'abitazione che vuoi prenotare: ");
@@ -204,18 +208,30 @@ public class Main {
                                     } else System.out.println("Sei gia un host!");
                                 }
                                 if (input.equals("RECENSIONE")) {
-                                    if (air.getUtenteprenotazioni().get(user) != null) {
-                                        System.out.println("Inserisci l'id della struttura che vuoi recensire: ");
-                                        for (Prenotazione p : air.getUtenteprenotazioni().get(user)) {
+                                    if (air.getUtenteprenotazioni().get(user) != null)
+                                    {
+                                        int i =0;
+                                        for (Prenotazione p : air.getUtenteprenotazioni().get(user))
+                                        {
                                             boolean controllo = false;
-                                            for (Feedback f : air.getUtenterecensioni().get(user)) {
-                                                if (p.getAbitazione().equals(f.getAbitazione())) controllo = true;
+                                            for (Feedback f : air.getUtenterecensioni().get(user))
+                                            {
+                                                if (p.getAbitazione().equals(f.getAbitazione()))
+                                                {
+                                                    controllo = true;
+                                                    break;
+                                                }
                                             }
                                             if (!controllo)
+                                            {
                                                 System.out.println(p.getAbitazione().getNome() + " in " + p.getAbitazione().getIndirizzo() + '\n' + "ID: " + p.getAbitazione().getID() + '\n' + "_____________________________________");
+                                                i++;
+                                            }
                                         }
+                                        if (i>0){System.out.println("Inserisci l'id della struttura che vuoi recensire: ");
                                         input = sc.nextLine();
-                                        if (air.getAbitazioni().containsKey(input)) {
+                                        if (air.getAbitazioni().containsKey(input))
+                                        {
                                             String titolo;
                                             String testo;
                                             int punteggio;
@@ -230,6 +246,7 @@ public class Main {
                                             f.setAbitazione(ab);
                                             air.addFeedback(user, f);
                                         } else System.out.println("Hai inserito un id non valido");
+                                    }else System.out.println("Non hai effettuato alcun soggiorno");
                                     } else System.out.println("Non hai effettuato alcun soggiorno");
                                 }
                                 if (input.equals("BACK")) run2 = false;
@@ -245,11 +262,21 @@ public class Main {
                 if (input.equals("STAFF")) {
                     boolean run3 = true;
                     while (run3) {
-                        System.out.println("cosa vuoi fare ? " + '\n' + "|Stampa Abitazioni Host|" + '\n' + "|Ultima Prenotazione Utente|" + '\n' + "|Lista Superhost|" + '\n' + "|Media posti letto|" + '\n' + "|Abitazione Gettonata|    (Abitazione con piu prenotazioni in uno specificato mese)" + '\n' + "|Host preferiti|          (Host con piu prenotazioni in uno specificato mese )" + '\n' + "|Utenti Piu Attivi|       (Con piu prenotazioni negli in uno specificato mese)" + '\n' + "|Richieste Host|          (Utenti in attesa di approvazione Host)" + '\n' + "|BACK|");
+                        System.out.println("""
+                                cosa vuoi fare ?
+                                |Stampa Abitazioni Host|
+                                |Ultima Prenotazione Utente|
+                                |Lista Superhost|
+                                |Media posti letto|
+                                |Abitazione Gettonata|    (Abitazione con piu prenotazioni in uno specificato mese)
+                                |Host preferiti|          (Host con piu prenotazioni in uno specificato mese )
+                                |Utenti Piu Attivi|       (Con piu prenotazioni negli in uno specificato mese)
+                                |Richieste Host|          (Utenti in attesa di approvazione Host)
+                                |BACK|""");
                         input = sc.nextLine();
                         input = input.toUpperCase(Locale.ROOT);
                         if (input.equals("ABITAZIONE GETTONATA")) try {
-                            int mese = 0;
+                            int mese;
                             System.out.println("Inserisci il mese (Numero) :");
                             mese = Integer.parseInt(sc.nextLine());
 
@@ -295,7 +322,7 @@ public class Main {
                             } else System.out.println("Non ci sono SuperHost");
                         }
                         if (input.equals("HOST PREFERITI")) try {
-                            int mese = 0;
+                            int mese;
                             System.out.println("Inserisci il mese (Numero) :");
                             mese = Integer.parseInt(sc.nextLine());
 
@@ -310,53 +337,52 @@ public class Main {
                         } catch (DateTimeException a) {
                             System.out.println("ERRORE 02: hai inserito una data non valida");
                         }
-                        if (input.equals("UTENTI PIU ATTIVI")) try {
-                            int mese = 0;
+                        if (input.equals("UTENTI PIU ATTIVI")) try
+                        {
+                            int mese;
                             System.out.println("Inserisci il mese (Numero) :");
                             mese = Integer.parseInt(sc.nextLine());
                             List<Utente> lista = air.utentipiuattivimese(Month.of(mese));
-                            if (lista != null) {
-                                for (Utente u : lista) {
-
+                            if (lista != null)
+                            {
+                                for (Utente u : lista)
+                                {
                                     System.out.println(u.getNome() + " " + u.getCognome() + " " + u.getEmail() + '\n' + "n giorni a " + Month.of(mese).toString() + ": " + u.getGiorniquestomese() + '\n' + "ID: " + u.getID() + '\n' + "_________________________________");
                                 }
 
                             } else
                                 System.out.println("Caro facoltoso turista americano hai buttato i soldi, qui non c'è neanche una prenotazione");
-                        } catch (DateTimeException a) {
-                            System.out.println("ERRORE 01: Hai inserito un valore non valido");
-                        }
-                        if (input.equals("RICHIESTE HOST")) {
+                        } catch (DateTimeException a) { System.out.println("ERRORE 01: Hai inserito un valore non valido"); }
+                        if (input.equals("RICHIESTE HOST"))
+                        {
                             int i = 0;
-                            for (Utente u : air.getUtenteprenotazioni().keySet()) {
-                                if (u.isRichiestahost() && !u.isHost()) {
+                            for (Utente u : air.getUtenteprenotazioni().keySet())
+                            {
+                                if (u.isRichiestahost() && !u.isHost())
+                                {
                                     System.out.println(u.getNome() + " " + u.getCognome() + " " + u.getEmail() + '\n' + "ID: " + u.getID() + '\n' + "_________________________________");
                                     i++;
                                 }
                             }
-                            if (i > 0) {
+                            if (i > 0)
+                            {
                                 System.out.println("Inserisci ID dell'utente che vuoi approvare come host: ");
                                 input = sc.nextLine();
-                                if (air.getUtenti().containsKey(input)) {
+                                if (air.getUtenti().containsKey(input))
+                                {
                                     air.autorizzaHost(air.getUtenti().get(input));
                                     System.out.println("Utente Approvato");
                                 }
-                            } else
-                                System.out.println("Caro facoltoso turista americano hai buttato i soldi, qui non c'è neanche un utente");
-
+                            } else System.out.println("Caro facoltoso turista americano hai buttato i soldi, qui non c'è neanche un utente");
                         }
-                        if (input.equals("MEDIA POSTI LETTO")) {
+                        if (input.equals("MEDIA POSTI LETTO"))
+                        {
                             System.out.println("La media dei posti letto delle abitazioni oggi presenti è : " + air.mediaPletto());
                         }
                         if (input.equals("BACK")) run3 = false;
                     }
-
                 }
-
-            } catch (NumberFormatException a) {
-                System.out.println("ERRORE 01: Hai inserito un valore non valido");
-            }
+            } catch (NumberFormatException a) { System.out.println("ERRORE 01: Hai inserito un valore non valido"); }
         }
-
     }
 }

@@ -30,7 +30,7 @@ public void aggiungiAbitazione(Utente utente ,Abitazione abitazione)
         hostabitazioni.get(utente).add(abitazione);
         HashSet<Prenotazione> vuoto = new HashSet<>();
         abitazioneprenotazioni.put(abitazione,vuoto);
-        abitazione.setHost(utente);
+        abitazione.setIDhost(utente.getIDhost());
     }
 }
 public void aggiungiAnnuncio(Abitazione abitazione , Annuncio annuncio)
@@ -71,8 +71,8 @@ public int prenota(Utente utente, Prenotazione prenotazione) //non void per main
             utenteprenotazioni.get(utente).add(prenotazione);
             abitazioneprenotazioni.get(prenotazione.getAbitazione()).add(prenotazione);
             utente.AddCredito(costo*-1);
-            prenotazione.getAbitazione().getHost().AddCredito(costo);
-            prenotazione.getAbitazione().getHost().addPrenotazione();
+            utenti.get(prenotazione.getAbitazione().getIDhost()).AddCredito(costo);
+            utenti.get(prenotazione.getAbitazione().getIDhost()).addPrenotazione();
             return 1;
         }
     }
