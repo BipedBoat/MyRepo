@@ -16,7 +16,7 @@ public class ReverseLinkedList
 
         if ((left<right)&& head.next!=null)
         {
-            if (left != 1) reverseBetween2(head.next,left,right,null,inizio,2);
+            if (left != 1) reverseBetween1part2(head.next,left,right,null,inizio,2);
             else {int memory = head.val;reverseBetween1part2(head.next,left,right,memory,inizio,2);}
         }
         return head;
@@ -91,7 +91,7 @@ public class ReverseLinkedList
         ListNode prova2 = new ListNode(3,prova1);
 
 
-        ListNode n = reverseBetween4(prova2,1,2);
+        ListNode n = reverseBetween3(prova2,1,2);
 
         System.out.println(n.val+" "+n.next.val);
 
