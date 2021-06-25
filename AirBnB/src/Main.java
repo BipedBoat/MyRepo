@@ -111,8 +111,8 @@ public class Main
                             }
                             if (input.equals("PRENOTA")) {
                                 for (Abitazione abitazione : air.getAbitazioneprenotazioni().keySet()) {
-                                    if (abitazione.getAnnuncio() != null)
-                                        System.out.println(abitazione.getNome() + " in " + abitazione.getIndirizzo() + '\n' + "n locali : " + abitazione.getNlocali() + '\n' + "n posti letto: " + abitazione.getNpostiletto() + '\n' + abitazione.getPiano() + "° piano" + '\n' + "Media recensioni: " + abitazione.getMediarecensioni() + '\n' + "ID Abitazione: " + abitazione.getID() + '\n' + "______________________________________________");
+                                    if (abitazione.getAnnuncio() != null&&!abitazione.getHost().getID().equals(user.getID()))
+                                        System.out.println(abitazione.getNome() + " in " + abitazione.getIndirizzo() + '\n' + "n locali : " + abitazione.getNlocali() + '\n' + "n posti letto: " + abitazione.getNpostiletto() + '\n' + abitazione.getPiano() + "° piano" + '\n'+"Prezzo: "+abitazione.getAnnuncio().getPrezzo()+"€ a notte"+'\n' + "Media recensioni: " + abitazione.getMediarecensioni() + '\n' + "ID Abitazione: " + abitazione.getID() + '\n' + "______________________________________________");
                                 }
                                 System.out.println("Inserisci l'ID dell'abitazione che vuoi prenotare: ");
                                 input = sc.nextLine();
@@ -123,7 +123,7 @@ public class Main
                                     int i = 0;
                                     while (i < date.size()) {
                                         if (i == date.size() - 1)
-                                            System.out.print(" al: " + date.get(i).format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+                                            System.out.println(" al: " + date.get(i).format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
                                         else if (stampa) {
                                             System.out.print("La struttura è disponibile dal: " + date.get(i).format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
                                             stampa = false;
@@ -222,7 +222,9 @@ public class Main
                                         testo = sc.nextLine();
                                         System.out.println("Dai un punteggio a questa struttura (da 1 a 5)");
                                         punteggio = Integer.parseInt(sc.nextLine());
-                                        air.addFeedback(user, new Feedback(titolo, testo, punteggio));
+                                        Feedback f= new Feedback(titolo, testo, punteggio);
+                                        f.setAbitazione(ab);
+                                        air.addFeedback(user,f);
                                     } else System.out.println("Hai inserito un id non valido");
                                 } else System.out.println("Non hai effettuato alcun soggiorno");
                             }
@@ -272,7 +274,7 @@ public class Main
                             input = sc.nextLine();
                             Prenotazione p = air.ultimaPrenUsr(input);
                             if (p != null) {
-                                System.out.println(p.getUtente().getNome() + " " + p.getUtente().getCognome() + " ha effettuato la sua ultima prenotazione presso: " + p.getAbitazione().getNome() + " in" + p.getAbitazione().getIndirizzo() + " dal " + p.getInizio().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) + " al " + p.getFine().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+                                System.out.println(p.getUtente().getNome() + " " + p.getUtente().getCognome() + " ha effettuato la sua ultima prenotazione presso: " + p.getAbitazione().getNome() + " in " + p.getAbitazione().getIndirizzo() + " dal " + p.getInizio().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) + " al " + p.getFine().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
                             } else System.out.println("L'id inserito non è valido");
                         }
                         if (input.equals("LISTA SUPERHOST")) {

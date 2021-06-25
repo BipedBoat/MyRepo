@@ -70,7 +70,7 @@ public int prenota(Utente utente, Prenotazione prenotazione) //non void per main
             prenotazione.getAbitazione().getAnnuncio().getDate().removeAll(prenotazione.getDate());
             utenteprenotazioni.get(utente).add(prenotazione);
             abitazioneprenotazioni.get(prenotazione.getAbitazione()).add(prenotazione);
-            utente.AddCredito(-costo);
+            utente.AddCredito(costo*-1);
             prenotazione.getAbitazione().getHost().AddCredito(costo);
             prenotazione.getAbitazione().getHost().addPrenotazione();
             return 1;
