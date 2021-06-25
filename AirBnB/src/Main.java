@@ -226,7 +226,7 @@ public class Main
                 boolean run3=true;
                 while(run3)
                 {
-                System.out.println("cosa vuoi fare ? "+'\n'+"|Abitazione Gettonata| (Abitazione con piu prenotazioni in uno specificato mese)"+'\n'+"|Stampa Abitazioni Host|"+'\n'+"|Ultima Prenotazione Utente|"+'\n'+"|Lista Superhost|"+'\n'+"|Host preferiti| (Host con piu prenotazioni in uno specificato mese )"+'\n'+"|Utenti Piu Attivi|(con piu prenotazioni negli ultimi 30 giorni)"+'\n'+"|Richieste Host|(Utenti in attesa di approvazione Host)"+'\n'+"|Media posti letto|"+'\n'+"|BACK|");
+                System.out.println("cosa vuoi fare ? "+'\n'+"|Stampa Abitazioni Host|"+'\n'+"|Ultima Prenotazione Utente|"+'\n'+"|Lista Superhost|"+'\n'+"|Media posti letto|"+'\n'+"|Abitazione Gettonata|    (Abitazione con piu prenotazioni in uno specificato mese)"+'\n'+"|Host preferiti|    (Host con piu prenotazioni in uno specificato mese )"+'\n'+"|Utenti Piu Attivi|    (Con piu prenotazioni negli in uno specificato mese)"+'\n'+"|Richieste Host|    (Utenti in attesa di approvazione Host)"+'\n'+"|BACK|");
                 input = sc.nextLine();
                 input= input.toUpperCase(Locale.ROOT);
                 if (input.equals("ABITAZIONE GETTONATA"))
